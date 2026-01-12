@@ -41,7 +41,8 @@ freq_bin_indices = [100, 200, 300, 350, 360, 364, 367, 370, 373, 376,
                     469, 472, 475, 478, 481, 485, 490, 500, 600, 700]
 coarse_freqs = fine_freqs[freq_bin_indices]
 halo_masses_Msun = np.logspace(3,13,n_halo_masses) # Msun
-xHI_bins = np.concatenate(([0], np.logspace(-5,0,n_xHIs-2), [1]))  # neutral fraction in haloes
+#xHI_bins = np.concatenate(([0], np.logspace(-5,0,n_xHIs-2), [1]))  # neutral fraction in haloes
+xHI_bins = np.linspace(0,1,n_xHIs)  # neutral fraction in haloes
 
 #%% Cross section fit parameters for H and He (add metals later)
 HI_params = {
