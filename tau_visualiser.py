@@ -65,3 +65,19 @@ tau_at_target_energy = tau_arr[energy_index, :, :, :]
 
 XHI, Mvir, Z = np.meshgrid(xHI_bins, halo_masses_Msun, redshift_bins, indexing='ij')
 visualise_tau(XHI.flatten(), Mvir.flatten(), Z.flatten(), tau_at_target_energy.flatten())
+
+# Linear plot of tau at 0.5 keV against redshift for fixed xHI and Mvir
+
+fixed_xHI = 0.5
+fixed_Mvir = 1e10  # in Msun
+xHI_idx = np.argmin(np.abs(xHI_bins - fixed_xHI))
+Mvir_idx = np.argmin(np.abs(halo_masses_Msun - fixed_Mvir))
+tau_vs_z = tau_at_target_energy[xHI_idx, Mvir_idx, :]
+plt.figure()
+plt.plot(redshift_bins, np.log10(tau_vs_z), marker='o')
+plt.xlabel(r'$z$', fontsize=12)
+plt.ylabel(r'log $\tau$ at 0.5 keV', fontsize=12)
+plt.title(f'Tau at 0.5 keV for xHI={fixed_xHI}, Mvir={fixed_Mvir} Msun')
+plt.grid()
+plt.savefig('./tau_vs_redshift.pdf', dpi=300)
+plt.show()

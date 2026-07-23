@@ -1,3 +1,8 @@
 *.npy
 *.pdf
 *.png
+.venv/
+*.pkl
+*.bak
+*.csv
+outputs/

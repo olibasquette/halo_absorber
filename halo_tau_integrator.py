@@ -13,7 +13,7 @@ n_xHIs = 10
 #redshift_bins_coarse = np.arange(15,51,1) # integer spaced from 15 to 50
 #redshift_bins_fine = np.arange(6,15,0.1) # spaced by 0.1 from 6 to 14.9
 #redshift_bins_wide = np.concatenate((redshift_bins_fine, redshift_bins_coarse)) # all 21cmSPACE redshifts
-redshift_bins_wide = np.arange(6,51,1) # integer spaced from 6 to 50
+redshift_bins_wide = np.arange(5,101,1) # integer spaced from 5 to 100
 n_redshifts = len(redshift_bins_wide)
 fine_freqs = np.genfromtxt("./fine_freqs.txt")
 freq_bin_indices = [100, 200, 300, 350, 360, 364, 367, 370, 373, 376,
@@ -57,13 +57,15 @@ for i in range(len(xHI_bins)):
 for i in range(0,len(xHI_bins)):
     tau_slice = tau_arr[:,i,25,25]  # select mid halo mass and redshift
     #plt.plot(coarse_freqs*HZ_TO_EV/1000, np.exp(-1*tau_slice), "-", label=rf'$xHI_\mathrm{{halo}} = {xHI_bins[i]:.2e}$') # plot in keV
-    plt.plot(coarse_freqs*HZ_TO_EV/1000, np.exp(-1*tau_slice), "-", color=cols[i]) # plot in keV
+    #plt.plot(coarse_freqs*HZ_TO_EV/1000, np.exp(-1*tau_slice), "-", color=cols[i]) # plot in keV
+    plt.plot(coarse_freqs*HZ_TO_EV/1000, tau_slice, "-", color=cols[i]) # plot in keV
 plt.xlabel('Photon Energy (keV)')
-plt.ylabel(r'Attenuation $e^{-\tau}$')
+#plt.ylabel(r'Attenuation $e^{-\tau}$')
+plt.ylabel(r'Optical Depth $\tau$')
 plt.xscale('log')
 plt.yscale('log')
-plt.ylim(1e-4,1)
-plt.xlim(1e-1,1e1)
+#plt.ylim(1e-4,1)
+#plt.xlim(1e-1,1e1)
 norm = Normalize(vmin=np.min(xHI_bins), vmax=np.max(xHI_bins))
 sm = cm.ScalarMappable(cmap=cm.jet, norm=norm)
 sm.set_array(xHI_bins)
@@ -78,7 +80,7 @@ plt.show()
 
 plt.figure()
 xHI_val = xHI_bins[5]
-z_val = redshift_bins_wide[25]
+z_val = redshift_bins_wide[10]
 
 cols = []
 for i in range(len(halo_masses_Msun)):
@@ -88,13 +90,13 @@ for i in range(len(halo_masses_Msun)):
 
 for i in range(0,len(halo_masses_Msun)):
     tau_slice = tau_arr[:,5,i,25]  # select mid xHI and redshift
-    plt.plot(coarse_freqs*HZ_TO_EV/1000, np.exp(-1*tau_slice), "-", color=cols[i], label=rf'Mvir = {halo_masses_Msun[i]:.2e} Msun') # plot in keV
+    plt.plot(coarse_freqs*HZ_TO_EV/1000, tau_slice, "-", color=cols[i], label=rf'Mvir = {halo_masses_Msun[i]:.2e} Msun') # plot in keV
 plt.xlabel('Photon Energy (keV)')
-plt.ylabel(r'Attenuation $e^{-\tau}$')
+plt.ylabel(r'Optical Depth $\tau$')
 plt.xscale('log')
 plt.yscale('log')
-plt.ylim(1e-4,1)
-plt.xlim(1e-1,1e1)
+plt.ylim(1e-1,1e1)
+#plt.xlim(1e-1,1e1)
 norm = Normalize(vmin=np.min(halo_masses_Msun), vmax=np.max(halo_masses_Msun))
 sm = cm.ScalarMappable(cmap=cm.jet, norm=norm)
 sm.set_array(halo_masses_Msun)
@@ -109,7 +111,7 @@ plt.show()
 
 plt.figure()
 xHI_val = xHI_bins[5]
-Mvir_val = halo_masses_Msun[25]
+Mvir_val = halo_masses_Msun[40]
 
 cols = []
 for i in range(len(redshift_bins_wide)):
@@ -119,13 +121,13 @@ for i in range(len(redshift_bins_wide)):
 
 for i in range(0,len(redshift_bins_wide)):
     tau_slice = tau_arr[:,5,25,i]  # select mid xHI and halo mass
-    plt.plot(coarse_freqs*HZ_TO_EV/1000, np.exp(-1*tau_slice), "-", color=cols[i]) # plot in keV
+    plt.plot(coarse_freqs*HZ_TO_EV/1000, tau_slice, "-", color=cols[i]) # plot in keV
 plt.xlabel('Photon Energy (keV)')
-plt.ylabel(r'Attenuation $e^{-\tau}$')
+plt.ylabel(r'Optical Depth $\tau$')
 plt.xscale('log')
 plt.yscale('log')
-plt.ylim(1e-4,1)
-plt.xlim(1e-1,1e1)
+plt.ylim(1e-1,1e1)
+#plt.xlim(1e-1,1e1)
 norm = Normalize(vmin=np.min(redshift_bins_wide), vmax=np.max(redshift_bins_wide))
 sm = cm.ScalarMappable(cmap=cm.jet, norm=norm)
 sm.set_array(redshift_bins_wide)
@@ -136,7 +138,7 @@ plt.title(f"Mvir = {Mvir_val:.2e} Msun, xHI = {xHI_val:.2e}")
 plt.savefig('./tau_slice_z.pdf', bbox_inches='tight', dpi=300)
 plt.show()
 
-sio.savemat("halo_tau_grid.mat", {"tau_arr": tau_arr,
+sio.savemat("./halo_tau_grid.mat", {"tau_arr": tau_arr,
                                   "freq_bins": coarse_freqs,
                                   "redshift_bins": redshift_bins_wide,
                                   "halo_masses_Msun": halo_masses_Msun,

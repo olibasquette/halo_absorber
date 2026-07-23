@@ -31,7 +31,8 @@ HZ_TO_EV = 4.135667696e-15  # eV/Hz
 #redshift_bins_coarse = np.arange(15,51,1) # integer spaced from 15 to 50
 #redshift_bins_fine = np.arange(6,15,0.1) # spaced by 0.1 from 6 to 14.9
 #redshift_bins_wide = np.concatenate((redshift_bins_fine, redshift_bins_coarse)) # all 21cmSPACE redshifts
-redshift_bins_wide = np.arange(6,51,1) # integer spaced from 6 to 50
+#redshift_bins_wide = np.arange(6,51,1) # integer spaced from 6 to 50
+redshift_bins_wide = np.arange(5,101,1) # integer spaced from 5 to 100
 n_redshifts = len(redshift_bins_wide)
 fine_freqs = np.genfromtxt("./fine_freqs.txt")
 freq_bin_indices = [100, 200, 300, 350, 360, 364, 367, 370, 373, 376,
@@ -40,7 +41,7 @@ freq_bin_indices = [100, 200, 300, 350, 360, 364, 367, 370, 373, 376,
                     439, 442, 445, 448, 451, 454, 457, 460, 463, 466,
                     469, 472, 475, 478, 481, 485, 490, 500, 600, 700]
 coarse_freqs = fine_freqs[freq_bin_indices]
-halo_masses_Msun = np.logspace(3,13,n_halo_masses) # Msun
+halo_masses_Msun = np.logspace(5,12,n_halo_masses) # Msun
 #xHI_bins = np.concatenate(([0], np.logspace(-5,0,n_xHIs-2), [1]))  # neutral fraction in haloes
 xHI_bins = np.linspace(0,1,n_xHIs)  # neutral fraction in haloes
 
@@ -209,7 +210,7 @@ def get_integrand_grid(nu_arr, z_arr, Mvir_Msun_arr, xHI_arr):
     integrand_arr = rho_gas_arr[None,:,:,:,:] * ((FH / PROTON_MASS) * xHI_arr[None,:,None,None,None] * cross_sections_HI[:,None,None,None,None] +
                                                  (FHE / (4*PROTON_MASS)) * xHI_arr[None,:,None,None,None]/4 * cross_sections_HeI[:,None,None,None,None] +
                                                  (FHE / (4*PROTON_MASS)) * (1 - xHI_arr[None,:,None,None,None])/2 * cross_sections_HeII[:,None,None,None,None])  # cm^-1
-    #print(f"integrand array shape: {integrand_arr.shape}")
+    print(f"integrand array shape: {integrand_arr.shape}")
     #print(integrand_arr)
     return integrand_arr, radii_arr
 
